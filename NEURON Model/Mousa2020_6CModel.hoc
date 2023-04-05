@@ -1,0 +1,307 @@
+begintemplate Mousa2020
+
+//"This is a simplified 6 compartment cell template for Mousa, 2020 Model"
+//Mousa, M. H., & Elbasiouny, S. M. (2020). Dendritic distributions of L-type Ca2+ and SKL channels in spinal motoneurons: 
+//a simulation study. Journal of Neurophysiology, 124(4), 1285-1307.
+// Auto start
+// ********************************************************** ##
+// Author:       Mohammed Mousa
+// Email:        Mohamed.Mousa@wright.edu
+// Affiliation:  Wright State University
+// ********************************************************** ##
+
+public soma, iseg, dend1, dend2, dend3,dend0
+public all, somatic, basal, AHIS
+// load_file("nrngui.hoc")		// Load Neuron
+
+proc init() {
+    topol()
+    createCell()
+    subsets()
+    parameters()
+    segments_numbers()  //enabling this, would increase the nseg
+}
+
+
+
+
+
+// soma
+//------
+create soma, iseg, dend1, dend2, dend3, dend0
+proc topol(){
+    connect  iseg(1), soma(0)
+    connect dend0(0), soma(0.5)
+    connect dend1(0), dend0(1)
+    connect dend2(0), dend1(1)
+    connect dend3(0), dend2(1)
+}
+
+proc createCell(){
+    v_init = -70
+    
+    soma {
+
+        nseg = 1
+        L = 48.8
+        diam = 48.8
+        insert pas      		
+        g_pas= 1/225
+        e_pas= v_init
+
+        Ra = 70          								   				
+        cm = 1          									
+
+        insert NafSmb1		
+        gnabar_NafSmb1 = 0.06			
+        th_NafSmb1 = 40  				
+                            
+        insert KdrSmb1		
+        gkdrbar_KdrSmb1 = 0.80048			
+
+        insert CaSmb1         	
+        gkcabar_CaSmb1 = 0.0221  // instead of 0.02		
+        gcanbar_CaSmb1= 0.01
+        gcalbar_CaSmb1 = 0
+
+        amA_NafSmb1 = 22 
+        bmA_NafSmb1 = 46 
+        theta_h_NafSmb1 = 47
+        theta_n_KdrSmb1 = 20
+        thetamn_CaSmb1 = 14
+        thetahn_CaSmb1 = 32
+                                
+        f_CaSmb1 = 0.01				
+        alpha_CaSmb1 = 1
+        kca_CaSmb1 = 8
+        kd_CaSmb1 = 0.0005             		
+        nexp_CaSmb1 = 1
+		
+    }
+
+    // axon hillock
+    //--------------
+
+
+    iseg {
+
+        nseg = 1
+        L = 20
+        diam = 12.94999838
+
+        insert pas      		
+        g_pas= 1/225		
+        e_pas= v_init
+
+        Ra = 70          				 	  				
+        cm = 1          				
+
+        // insert hb1			
+        // ghbar_hb1 = 0.001/7				
+                    
+        insert NafIsb1		
+        gnabar_NafIsb1 = 1.3392			
+        th_NafIsb1 = 40	   					
+                            
+        insert NapIsb1		
+        gnapbar_NapIsb1 = 3.2971e-5		
+                
+        insert KdrIsb1		
+        gkbar_KdrIsb1 = 0.16552			
+
+        amA_NafIsb1 = 18
+        bmA_NafIsb1 = 38
+        theta_h_NafIsb1 = 47
+        theta_n_KdrIsb1 = 20
+        ampB_NapIsb1 = 30.4
+        bmpB_NapIsb1 = 34.7
+    }
+        
+
+    CaDen_Max = 0.000168        // for a peak of 12.29
+    // Dendrites
+    //-----------
+
+    dend0 {
+
+        insert info
+
+        nseg = 1
+        // L = 1625.55
+        L     = 1450.97
+        diam  = 42.2188  // Area 64%
+        // diam(0:1) = 41.436:42.492
+        
+
+        insert pas      		
+        g_pas= 1/11000
+        e_pas= v_init
+
+        Ra = 70          							
+        cm = 1          				
+
+        // insert hb1			
+        // ghbar_hb1 = 0.002/7				
+
+    }
+
+
+    dend1 {
+
+        insert info
+
+        nseg = 1
+        // L = 1625.55
+        L     = 1450.97
+        diam  = 42.2188  // Area 64%
+        // diam(0:1) = 41.436:42.492
+        
+
+        insert pas      		
+        g_pas= 1/11000
+        e_pas= v_init
+
+        Ra = 70          							
+        cm = 1          				
+
+        // insert hb1			
+        // ghbar_hb1 = 0.002/7				
+
+    }
+
+
+    dend2 {
+
+        insert info
+        // L = 1581.58
+        // diam(0:1) = 42.492:34.303
+        L    = 754.842 * 1.81
+        diam = 36.4297   //Area 26%
+        nseg = 1
+    
+
+        insert pas      		
+        g_pas= 1/11000
+        e_pas= v_init
+
+        Ra = 70          							
+        cm = 1          				
+
+
+        insert CaDen
+		theta_m_CaDen	= -43  	// was 43  originally
+		O_tau_CaDen 	= 10 	// Activation time constant
+		O_tau2_CaDen	= 50    // deactivation time constant (50+10=60)
+		W_tau_d_CaDen	= 1200 	// warm-up tail current time constant
+		tailon_CaDen	= 1     // 1 for on, 0 for off
+		AmpRandG_CaDen 	= 0.5   // compensation for turning the RNG off
+		gcabar_CaDen	= CaDen_Max	
+		gkcabar_CaDen	= CaDen_Max	 * 0.41 // SK channel conductance
+		Warm_Gear_CaDen = 1 // 1 is the default, increasing it, ramp-up the warm-up kinetics
+		Warm_thresh_CaDen= 0.27	
+    }
+
+
+
+    dend3 {
+
+        // L = 3587.98
+        // diam(0:1) = 34.303:0.53
+        L       = 1037.91 * 1.81
+        diam    = 10.1901    // area 10%
+        nseg    = 1
+
+        insert info
+        
+
+        insert pas      		
+        g_pas= 1/11000
+        e_pas= v_init
+
+        Ra = 70          				 				
+        cm = 1          				
+
+        // insert hb1			
+        // ghbar_hb1 = 0.002/7		
+
+
+        insert CaDen
+		theta_m_CaDen	= -43  	// was 43  originally
+		O_tau_CaDen 	= 10 	// Activation time constant
+		O_tau2_CaDen	= 50    // deactivation time constant (50+10=60)
+		W_tau_d_CaDen	= 1200 	// warm-up tail current time constant
+		tailon_CaDen	= 1     // 1 for on, 0 for off
+		AmpRandG_CaDen 	= 0.5   // compensation for turning the RNG off
+		gcabar_CaDen	= CaDen_Max	* 0.25
+		gkcabar_CaDen	= CaDen_Max	* 0.41 * 0.25
+		Warm_Gear_CaDen = 1 // 1 is the default, increasing it, ramp-up the warm-up kinetics
+		Warm_thresh_CaDen= 0.27			
+
+    }
+    print "6 compartment cell created"
+}
+
+objref all, somatic, basal , AHIS
+proc subsets() {
+    objref all, somatic, basal , AHIS
+    all = new SectionList()
+    soma all.append()
+	iseg all.append()
+    dend1 all.append()
+    dend2 all.append()
+    dend3 all.append()
+    dend0 all.append()
+
+    somatic = new SectionList()
+    soma somatic.append()
+
+    basal = new SectionList()
+    dend1 basal.append()
+    dend2 basal.append()
+    dend3 basal.append()
+    dend0 basal.append()
+
+    AHIS = new SectionList()
+    iseg AHIS.append()
+
+}
+
+proc parameters() {
+	celsius = 36			            // Temperature at which simulations are performed
+	v_init	= -70                		// mV, resting membrane potential
+}
+
+
+
+
+proc uninsert_Active_channels() {
+    soma {
+        uninsert NafSmb1
+        uninsert KdrSmb1
+        uninsert CaSmb1
+    }
+    iseg {
+        uninsert NafIsb1
+        uninsert NapIsb1
+        uninsert KdrIsb1
+    }
+
+    forsec "den" {
+        uninsert CaDen
+    }
+    print "Active channels has been removed from Soma , iseg , ah sections, please check the dendrites carefully"
+}//  End of Procedure
+
+
+// Define nseg in every segment according to d_lambda
+// for testing purposes.
+external lambda_f
+
+proc segments_numbers() {
+
+	D_LAMBDA = 0.1
+	forall { nseg = int((L/(D_LAMBDA*lambda_f(100))+0.9)/2)*2 + 1 }
+
+} // End of Procedure
+
+endtemplate Mousa2020

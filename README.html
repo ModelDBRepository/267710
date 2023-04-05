@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+     <head>
+          <meta charset="utf-8">
+          <title>README</title>
+     </head>
+     <body>
+
+<title>Bifurcation-analysis-of-spinal-motoneuron-firing-behaviour</title>
+<h1>Bifurcation-analysis-of-spinal-motoneuron-firing-behaviour</h1>
+<hr>
+<p>
+This is the README file for the computer models used in the paper: <br>
+
+<b>Moustafa, M., Mousa, M. H., Saad, M. S., Basha, T., & Elbasiouny, S. M. (2023). Bifurcation analysis of motoneuronal
+excitability mechanisms under normal and ALS conditions. Frontiers in Cellular Neuroscience.
+(<a href="https://www.frontiersin.org/articles/10.3389/fncel.2023.1093199/full">paper link</a>)</b>
+
+</p>
+These files were contributed by Muhammed Moustafa, Mohamed Mousa.
+
+
+<p>
+There are two models in this archive. The first is a NEURON model (<a href="http://www.neuron.yale.edu">http://www.neuron.yale.edu</a>), and the second is XPPAUT model (<a href="https://sites.pitt.edu/~phase/bard/bardware/xpp/xpp.html">XPPAUT 8.0</a>). The NEURON model contain five cell templates, each one represent a case from the paper. The XPPAUT model is prepared on the control model case with 6 compartments, however, the model parameters can be changed to simulated all the other cases presented in the paper. both (NEURON and XPPAUT) are generating the same results. The XPPAUT model is used to generate the bifurcation diagrams.
+<hr>
+<h3>Control Model</h3> 
+<img src="6C cartoon.png" alt="Mousa 2020 reduced model" style="width:500px;height:250px;"">
+<br>
+The control model is a six compartment model of Cat spinal motoneuron. the model is a reduced version of the model presented in the paper:<a href="https://journals.physiology.org/doi/full/10.1152/jn.00169.2020">Dendritic distributions of L-type Ca2+ and SKL channels in spinal motoneurons: a simulation study</a>.
+
+</p>
+<hr>
+<h3>NEURON Model</h3>
+<img src="./NEURON Model/Capture.png" alt="Simulation" style="width:500px;height:600px;">
+<p>
+     To run:
+     <ul>
+     <li>Install Python (<a href="https://www.python.org">https://www.python.org</a>)</li>
+     <li>Install NEURON (<a href="http://www.neuron.yale.edu">http://www.neuron.yale.edu</a>)</li>
+     <li>Compile the mod files by executing<br>
+     <code>nrnivmodl</code></li>
+
+         <li>Then execute <br>
+          <code>python3 -i Auto_start.py </code>
+          </li>
+          <li>
+          Click on the Init & Run button to launch a simulation.</li>
+ 
+     </ul>
+
+     <br>
+
+     </p>
+
+<hr>
+<h3>XPPAUT Model</h3>
+<p>The model files discription is in readme.md file within the "6cModel Xppaut" folder. the model can also be found on github with discription (<a href="https://github.com/M-Hisham/Estimating-slicing-effect-on-spinal-MNs">Link</a>) 
+    <h3>Files List:</h3> 
+     <dl>
+     <dt>main.ode</dt>
+     <dd>model starting point</dd>
+     <dt>soma, sj, dendrites .inc</dt>
+     <dd>Compartment and their channels parameters</dd>
+     <dt>stim.inc</dt>
+     <dd>stimulation current equation & parameters</dd>
+     <dt>glob.inc</dt>
+     <dd>global parameters used in the model</dd>
+     </dl>
+
+     <h3>How to run:</h3>
+     <ol>
+     <li>Install XPPAUT (<a href="https://sites.pitt.edu/~phase/bard/bardware/xpp/xpp.html">XPPAUT 8.0</a>)</li>
+     <li>Open main.ode file using XPPAUT</li>
+     <li>Run time simulation till reaching steady state, usually running for till 600ms is enough.</li>
+     <li>Grab one of the two hopf bifurcation points and run periodic.</li>
+     </ol>
+</p>
+
+
+<hr>
+<h3>Contacts</h3>
+<p>
+
+     <ul>
+     <li><a href="mailto:muhammadmoustafa@eng1.cu.edu.eg">Muhammed Moustafa</a></li>
+     <li><a href="mailto:mohamed.mousa@wright.edu">Mohamed Mousa</a></li>
+     </ul>
+</body>
+</html>
